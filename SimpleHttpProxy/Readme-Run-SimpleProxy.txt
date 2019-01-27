@@ -3,7 +3,7 @@ The SimpleProxy program is built with Gradle 4.6 and Java 8
 Open a console, go to the the project root directory and run gradle to kick off the 
 SimpleProxy on local port 9999:
 
-    gradle -PmainClass=parsehub.SimpleProxy execute
+    gradle -PmainClass=simplehttpproxy.SimpleProxy execute
   
 Open another console, try some urls like:
     
