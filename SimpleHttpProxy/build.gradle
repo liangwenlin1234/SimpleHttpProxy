@@ -1,0 +1,86 @@
+buildscript {
+	repositories {
+	    maven {
+		    url "https://plugins.gradle.org/m2/"
+	    }
+	}
+		
+}
+
+plugins {
+    id "org.sonarqube" version "2.6"
+	id 'java'
+	id 'maven'
+	id 'eclipse'
+	id 'application'
+    id "jacoco"
+}
+
+group = 'simple-http-proxy'
+description = 'proxy-liangwenlin'
+version = '0.0.1'
+
+repositories {
+    maven {
+        url 'd:\\java\\repository'
+    }
+
+    maven {
+        url "https://dl.bintray.com/ethereum/maven/"
+    }
+
+    maven {
+        url "https://jitpack.io"
+    }
+
+    jcenter()
+
+    mavenCentral()
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+eclipse {
+	classpath {
+		downloadJavadoc = true
+		downloadSources = true
+	}
+}
+
+mainClassName = 'parsehub.SimpleProxy'
+
+dependencies {
+	
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+	
+    //for logging
+    implementation 'log4j:log4j:1.2.17'
+	
+	//for spring boot
+	implementation 'org.springframework.boot:spring-boot:2.0.6.RELEASE'
+	implementation "org.springframework.boot:spring-boot-starter-web:2.0.6.RELEASE"
+		
+    //for testing
+	testImplementation "org.springframework.boot:spring-boot-starter-test:2.0.6.RELEASE"
+	testImplementation group: 'org.springframework', name: 'spring-test', version: '5.1.2.RELEASE'
+    testImplementation group: "junit", name: "junit", version: "4.12"
+    testImplementation group: "org.mockito", name: "mockito-all", version: "1.10.19"	
+
+}
+
+// gradle -PmainClass=parsehub.SimpleProxy execute
+task execute(type:JavaExec) {
+	main = 'parsehub.SimpleProxy'
+	classpath = sourceSets.main.runtimeClasspath
+}
+
+// gradle clean test
+test {
+	
+	testLogging {
+		showStandardStreams = true
+
+	}
+	
+}
