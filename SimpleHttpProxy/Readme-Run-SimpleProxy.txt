@@ -25,3 +25,4 @@ For testing:
 limitation: 
     HTTP redirects are not be handled. 
     embedded urls like <img src="/images/smiley.gif"> are not handled.
+    
