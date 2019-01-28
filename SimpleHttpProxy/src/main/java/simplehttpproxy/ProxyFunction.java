@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 public class ProxyFunction {
 	private static Logger logger = Logger.getLogger(ProxyFunction.class);
+	
+	private ProxyFunction() {}
     	
 	private static void inputToOutput(final InputStream input, final OutputStream output) throws IOException {
 		byte[] buff = new byte[2048];
@@ -57,7 +59,7 @@ public class ProxyFunction {
 
 		urlConnection = (HttpURLConnection) urlToServer.openConnection();
 
-		urlConnection.setRequestMethod(method.name().toString());
+		urlConnection.setRequestMethod(method.name());
 		
 		// set request header
 		Enumeration<String> headerNames = request.getHeaderNames();
@@ -78,7 +80,7 @@ public class ProxyFunction {
 		return urlConnection;
 	}
 	
-	public static void sendPostAndGetResponse(final HttpServletRequest request, final HttpServletResponse response, final RequestMethod method) throws IOException{
+	public static void sendPostAndGetResponse(final HttpServletRequest request, final HttpServletResponse response, final RequestMethod method) throws IOException {
 		
         final HttpURLConnection urlConnection = getHttpURLConnection(request, method);
 
@@ -86,8 +88,8 @@ public class ProxyFunction {
 		
 		urlConnection.setDoOutput(true);
 		final OutputStream toDestination = urlConnection.getOutputStream();
-		OutputStreamWriter outputStreamToUrl = null;
-		try {
+		
+		try (OutputStreamWriter outputStreamToUrl = new OutputStreamWriter(toDestination)) {
 			Enumeration<String> names = request.getParameterNames();
 			String parameters = "";
 			if (names != null) {
@@ -100,13 +102,11 @@ public class ProxyFunction {
 
 			}
 			logger.debug("post-parameters => " + parameters);
-			outputStreamToUrl = new OutputStreamWriter(toDestination);
+			
 			outputStreamToUrl.write(parameters);
 			outputStreamToUrl.flush();
-		} finally {
-			if (outputStreamToUrl != null) {
-				outputStreamToUrl.close();
-			}
+		} catch (IOException ex) {
+			throw ex;
 		}
 
 		final InputStream fromDestination = urlConnection.getInputStream();
