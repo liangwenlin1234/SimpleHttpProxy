@@ -7,8 +7,9 @@ buildscript {
 		
 }
 
+// gradle tasks --all
 plugins {
-    id "org.sonarqube" version "2.6"
+	id 'org.sonarqube' version "2.6.1"
 	id 'java'
 	id 'maven'
 	id 'eclipse'
