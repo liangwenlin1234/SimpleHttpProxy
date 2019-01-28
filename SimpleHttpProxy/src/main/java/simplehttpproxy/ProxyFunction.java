@@ -91,22 +91,24 @@ public class ProxyFunction {
 		
 		try (OutputStreamWriter outputStreamToUrl = new OutputStreamWriter(toDestination)) {
 			Enumeration<String> names = request.getParameterNames();
-			String parameters = "";
+			StringBuilder parameters = new StringBuilder("");
+			String result = "";
 			if (names != null) {
 				while (names.hasMoreElements()) {
 					String name = names.nextElement();
 					String value = request.getParameter(name);
-					parameters = parameters + name + "=" + URLEncoder.encode(value, StandardCharsets.UTF_8.toString()) + "&";
+					parameters.append(name + "=" + URLEncoder.encode(value, StandardCharsets.UTF_8.toString()) + "&");
 				}
-				parameters = "".equals(parameters) == true ? "" : parameters.substring(0, (parameters.length() - 1));
+				
+				if (!"".equals(parameters.toString())) {
+					result = parameters.toString().substring(0, (parameters.length() - 1));
+				}
 
 			}
-			logger.debug("post-parameters => " + parameters);
+			logger.debug("post-parameters => " + result);
 			
-			outputStreamToUrl.write(parameters);
+			outputStreamToUrl.write(result);
 			outputStreamToUrl.flush();
-		} catch (IOException ex) {
-			throw ex;
 		}
 
 		final InputStream fromDestination = urlConnection.getInputStream();
