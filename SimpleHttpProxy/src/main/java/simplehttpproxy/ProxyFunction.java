@@ -89,6 +89,7 @@ public class ProxyFunction {
 		urlConnection.setDoOutput(true);
 		final OutputStream toDestination = urlConnection.getOutputStream();
 		
+		// send parameters for POST 
 		try (OutputStreamWriter outputStreamToUrl = new OutputStreamWriter(toDestination)) {
 			Enumeration<String> names = request.getParameterNames();
 			StringBuilder parameters = new StringBuilder("");
