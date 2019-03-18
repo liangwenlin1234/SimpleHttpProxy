@@ -57,6 +57,8 @@ public class ProxyFunctionUtils {
 
 		urlToServer = new URL(requestUrl);
 
+		logger.debug("dest-requestUrl-is: " + requestUrl);
+		
 		urlConnection = (HttpURLConnection) urlToServer.openConnection();
 
 		urlConnection.setRequestMethod(method.name());
@@ -67,6 +69,7 @@ public class ProxyFunctionUtils {
 			while (headerNames.hasMoreElements()) {
 				String name = headerNames.nextElement();
 				String value = request.getHeader(name);
+				logger.debug("header-name-value: " + name + " ===>>> " + value);
 				urlConnection.setRequestProperty(name, value);
 			}
 			
